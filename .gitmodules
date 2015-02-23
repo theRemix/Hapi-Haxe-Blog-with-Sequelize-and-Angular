@@ -1,0 +1,3 @@
+[submodule "server/js-kit"]
+	path = server/js-kit
+	url = https://github.com/clemos/haxe-js-kit.git

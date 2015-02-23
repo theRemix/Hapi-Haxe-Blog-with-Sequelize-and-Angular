@@ -1,0 +1,5 @@
+-main App
+-cp server
+-cp server/js-kit
+-js app.js
+-dce full
