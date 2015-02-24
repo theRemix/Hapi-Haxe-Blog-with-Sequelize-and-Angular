@@ -27,4 +27,5 @@ extern class Server
     ?labels : Array<String>, // default []
     ?tls : Dynamic,      // no default
   } ) : Void;
+  public function route( routes : Array<Route> ) : Void;
 }

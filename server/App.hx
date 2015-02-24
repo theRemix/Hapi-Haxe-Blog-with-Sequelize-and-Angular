@@ -11,6 +11,8 @@ class App
     server = Hapi.createServer();
     server.connection({ port: Config.PORT });
 
+    server.route( Routes.routes );
+
     server.start(function(){
       server.log('info', 'Server running at: ${server.info.uri}');
     });
