@@ -11,6 +11,8 @@ class App
     server = Hapi.createServer();
     server.connection({ port: Config.PORT });
 
+    Plugins.register( server );
+
     server.route( Routes.routes );
 
     server.start(function(){

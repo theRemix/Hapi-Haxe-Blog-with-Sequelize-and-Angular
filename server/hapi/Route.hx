@@ -1,7 +1,7 @@
 package hapi;
 
 typedef RouteHandler = {
-  handler : Request -> Reply -> Dynamic
+  handler : Request -> Reply -> Void
 }
 
 typedef Route = {
@@ -136,7 +136,7 @@ typedef Request = {
   /*
     an object where each key is a path parameter name with matching value as described in Path parameters
    */  
-  params : String,
+  params : Dynamic,
 
   /*
     an array containing all the path params values in the order they appeared in the path
@@ -230,7 +230,7 @@ typedef Request = {
   /*
     the server object
    */  
-  server : String,
+  server : Server,
   
   /*
     Special key reserved for plugins implementing session support.
@@ -317,4 +317,4 @@ typedef Request = {
 
 }
 
-typedef Reply = Dynamic -> Void;
+typedef Reply = Dynamic; // -> Void;
