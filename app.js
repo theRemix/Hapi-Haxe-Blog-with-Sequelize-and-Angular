@@ -26,8 +26,9 @@ HxOverrides.cca = function(s,index) {
 };
 var Plugins = function() { };
 Plugins.register = function(server) {
+	var goodOptions = { opsInterval : 5000, reporters : [{ reporter : js.Node.require("good-console"), args : [{ ops : "*", request : "*", log : "*", response : "*", error : "*"}]}]};
 	var hapiSequelizeOpts = { database : "hapitest", username : "postgres", password : null, host : "coreos", port : 9432, dialect : "postgres", models : null, logging : false, 'native' : false, dialectOptions : { }};
-	server.register([{ register : js.Node.require("hapi-sequelize"), options : hapiSequelizeOpts}],function(err) {
+	server.register([{ register : js.Node.require("good"), options : goodOptions},{ register : js.Node.require("hapi-sequelize"), options : hapiSequelizeOpts}],function(err) {
 		var sequelize_plugin = server.plugins["hapi-sequelize"];
 		models.Sequelize.register(sequelize_plugin);
 		if(err) {
@@ -158,3 +159,5 @@ js.Node.console = console;
 js.Node.require = require;
 App.main();
 })();
+
+//# sourceMappingURL=app.js.map

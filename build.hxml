@@ -3,3 +3,4 @@
 -cp server/js-kit
 -js app.js
 -dce full
+-debug

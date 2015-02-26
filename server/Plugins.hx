@@ -7,6 +7,22 @@ class Plugins
 
   public static inline function register( server : Server ):Void
   {
+    var goodOptions = {
+      opsInterval: 5000,
+      reporters: [{
+        reporter: Node.require('good-console'),
+        args:[{ 
+          #if debug
+          ops: '*',
+          request: '*',
+          log: '*',
+          response: '*',
+          #end
+          error: '*'
+        }]
+      }]
+    };
+
     var hapiSequelizeOpts = {
       database: 'hapitest',
       username: 'postgres',
@@ -21,10 +37,10 @@ class Plugins
     };
 
     server.register([
-      // {
-      //   register: Node.require('good'),
-      //   options: goodOptions
-      // },
+      {
+        register: Node.require('good'),
+        options: goodOptions
+      },
       {
         register: Node.require( HAPI_SEQUELIZE ),
         options: hapiSequelizeOpts
