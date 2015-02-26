@@ -1,0 +1,14 @@
+<form role="form" name="blog_form">
+  <p>
+    <label for="title">Title</label>
+    <input id="title" type="text" ng-model="post.title">
+  </p>
+  <p>
+    <label for="body">Body</label>
+    <br>
+    <textarea id="body" ng-model="post.body"></textarea>
+  </p>
+  
+  <button class="btn btn-success" type="button" ng-click="commit(post)">{{commit_label}}</button>
+
+</form>

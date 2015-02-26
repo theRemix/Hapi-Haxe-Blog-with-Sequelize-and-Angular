@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hapi Test</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+</head>
+<body ng-app="HapiTest">
+  <nav class="navbar navbar-inverse" role="navigation">
+    <div class="navbar-header">
+      <a class="navbar-brand" ui-sref="#">Hapi Test</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a ui-sref="blog">Blog</a></li>
+      <li><a ui-sref="new_blog">New Post</a></li>
+      <li><a ui-sref="login">Login</a></li>
+      <!-- <li><a ui-sref="logout">Logout</a></li> -->
+    </ul>
+  </nav>
+
+  <h1>Hapi Test</h1>
+
+  <div class="container">
+    <div ui-view=""></div>
+  </div>
+
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/routes.js"></script>
+  <script src="scripts/controllers/blogcontroller.js"></script>
+  <script src="scripts/services/blogservice.js"></script>
+</body>
+</html>
