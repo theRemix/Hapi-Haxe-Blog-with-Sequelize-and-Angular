@@ -54,7 +54,7 @@ class Plugins
       },
       {
         register: Node.require( HAPI_SEQUELIZE ),
-        options: hapiSequelizeOpts
+        options: (Node.process.env.DATABASE_URL != null)? Node.process.env.DATABASE_URL : hapiSequelizeOpts
       }
     ], function (err) {
       

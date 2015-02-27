@@ -45,7 +45,7 @@ Plugins.register = function(server) {
 			throw err;
 		}
 	});
-	server.register([{ register : js.Node.require("good"), options : goodOptions},{ register : js.Node.require("hapi-sequelize"), options : hapiSequelizeOpts}],function(err1) {
+	server.register([{ register : js.Node.require("good"), options : goodOptions},{ register : js.Node.require("hapi-sequelize"), options : js.Node.process.env.DATABASE_URL != null?js.Node.process.env.DATABASE_URL:hapiSequelizeOpts}],function(err1) {
 		var sequelize_plugin = server.plugins["hapi-sequelize"];
 		models.Sequelize.register(sequelize_plugin);
 		if(err1) {
@@ -160,6 +160,7 @@ var EventEmitter__0 = require("events").EventEmitter;
 var Readable__1 = require("stream").Readable;
 var Writable__2 = require("stream").Writable;
 js.Node.console = console;
+js.Node.process = process;
 js.Node.require = require;
 Auth.Bcrypt = js.Node.require("bcrypt");
 Auth.users = { john : { username : "john", password : "$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Tm", name : "John Doe", id : "2133d32a"}};
