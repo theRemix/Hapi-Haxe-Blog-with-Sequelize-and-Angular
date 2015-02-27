@@ -18,6 +18,16 @@ var App = function() {
 App.main = function() {
 	var app = new App();
 };
+var js = {};
+js.Node = function() { };
+var Auth = function() { };
+Auth.validate = function(username,password,callback) {
+	var user = Reflect.field(Auth.users,username);
+	if(user == null) return callback(null,false,null);
+	Auth.Bcrypt.compare(password,user.password,function(err,isValid) {
+		callback(err,isValid,{ id : user.id, name : user.name});
+	});
+};
 var HxOverrides = function() { };
 HxOverrides.cca = function(s,index) {
 	var x = s.charCodeAt(index);
@@ -28,12 +38,19 @@ var Plugins = function() { };
 Plugins.register = function(server) {
 	var goodOptions = { opsInterval : 5000, reporters : [{ reporter : js.Node.require("good-console"), args : [{ ops : "*", request : "*", log : "*", response : "*", error : "*"}]}]};
 	var hapiSequelizeOpts = { database : "hapitest", username : "postgres", password : null, host : "coreos", port : 9432, dialect : "postgres", models : null, logging : false, 'native' : false, dialectOptions : { }};
-	server.register([{ register : js.Node.require("good"), options : goodOptions},{ register : js.Node.require("hapi-sequelize"), options : hapiSequelizeOpts}],function(err) {
-		var sequelize_plugin = server.plugins["hapi-sequelize"];
-		models.Sequelize.register(sequelize_plugin);
+	server.register([js.Node.require("hapi-auth-basic")],function(err) {
+		server.auth.strategy("simple","basic",{ validateFunc : Auth.validate});
 		if(err) {
 			js.Node.console.error("Failed to load a plugin:",err);
 			throw err;
+		}
+	});
+	server.register([{ register : js.Node.require("good"), options : goodOptions},{ register : js.Node.require("hapi-sequelize"), options : hapiSequelizeOpts}],function(err1) {
+		var sequelize_plugin = server.plugins["hapi-sequelize"];
+		models.Sequelize.register(sequelize_plugin);
+		if(err1) {
+			js.Node.console.error("Failed to load a plugin:",err1);
+			throw err1;
 		}
 	});
 };
@@ -93,7 +110,7 @@ controllers.Blog.get_create = function() {
 		},function(err) {
 			reply(err);
 		});
-	}};
+	}, auth : "simple"};
 };
 controllers.Blog.get_update = function() {
 	return { handler : function(request,reply) {
@@ -102,7 +119,7 @@ controllers.Blog.get_update = function() {
 		},function(err) {
 			reply(err);
 		});
-	}};
+	}, auth : "simple"};
 };
 controllers.Blog.get_destroy = function() {
 	return { handler : function(request,reply) {
@@ -111,7 +128,7 @@ controllers.Blog.get_destroy = function() {
 		},function(err) {
 			reply(err);
 		});
-	}};
+	}, auth : "simple"};
 };
 var Std = function() { };
 Std.parseInt = function(x) {
@@ -128,8 +145,6 @@ hapi.Hapi.createServer = function() {
 	var hapi = require('hapi');
 	return new hapi.Server();
 };
-var js = {};
-js.Node = function() { };
 models.Sequelize = function() { };
 models.Sequelize.register = function(sequelize_plugin) {
 	var _g = 0;
@@ -144,6 +159,10 @@ models.Sequelize.register = function(sequelize_plugin) {
 var EventEmitter__0 = require("events").EventEmitter;
 var Readable__1 = require("stream").Readable;
 var Writable__2 = require("stream").Writable;
+js.Node.console = console;
+js.Node.require = require;
+Auth.Bcrypt = js.Node.require("bcrypt");
+Auth.users = { john : { username : "john", password : "$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Tm", name : "John Doe", id : "2133d32a"}};
 models.Post.TABLE_NAME = "post";
 controllers.Blog.index = { handler : function(request,reply) {
 	models.Model.all(models.Post).then(function(posts) {
@@ -154,9 +173,10 @@ controllers.Blog.index = { handler : function(request,reply) {
 	return null;
 }};
 controllers.Root.static_files = { handler : { directory : { path : "public"}}};
-Routes.routes = [{ method : "GET", path : "/api/blog", config : controllers.Blog.index},{ method : "GET", path : "/api/blog/{id}", config : controllers.Blog.get_show()},{ method : "POST", path : "/api/blog", config : controllers.Blog.get_create()},{ method : "DELETE", path : "/api/blog/{id}", config : controllers.Blog.get_destroy()},{ method : "PUT", path : "/api/blog/{id}", config : controllers.Blog.get_update()},{ method : "GET", path : "/{path*}", config : controllers.Root.static_files}];
-js.Node.console = console;
-js.Node.require = require;
+controllers.Root.login = { handler : function(request,reply) {
+	reply(request.auth.credentials);
+}, auth : "simple"};
+Routes.routes = [{ method : "GET", path : "/api/blog", config : controllers.Blog.index},{ method : "GET", path : "/api/blog/{id}", config : controllers.Blog.get_show()},{ method : "POST", path : "/api/blog", config : controllers.Blog.get_create()},{ method : "DELETE", path : "/api/blog/{id}", config : controllers.Blog.get_destroy()},{ method : "PUT", path : "/api/blog/{id}", config : controllers.Blog.get_update()},{ method : "GET", path : "/login", config : controllers.Root.login},{ method : "GET", path : "/{path*}", config : controllers.Root.static_files}];
 App.main();
 })();
 

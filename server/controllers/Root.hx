@@ -8,4 +8,12 @@ class Root
       directory: { path: 'public' }
     }
   };
+
+  public static var login : RouteHandler = {
+    // just triggers basic auth
+    handler: function (request, reply) {
+      reply( request.auth.credentials );
+    },
+    auth: 'simple'
+  };
 }

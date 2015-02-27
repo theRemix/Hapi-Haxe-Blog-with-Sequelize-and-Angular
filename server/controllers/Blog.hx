@@ -45,7 +45,8 @@ class Blog
         },function (err) {
           reply(err);
         });
-      }
+      },
+      auth: 'simple'
     }
   };
   
@@ -64,7 +65,8 @@ class Blog
         },function (err) {
           reply(err);
         });
-      }
+      },
+      auth: 'simple'
     }
   };
   
@@ -83,7 +85,8 @@ class Blog
         },function (err) {
           reply(err);
         });
-      }
+      },
+      auth: 'simple'
     }
   };
 

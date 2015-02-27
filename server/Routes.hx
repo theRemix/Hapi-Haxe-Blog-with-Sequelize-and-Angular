@@ -28,6 +28,12 @@ class Routes
       path: '/api/blog/{id}',
       config: controllers.Blog.update
     },
+
+    {
+      method: 'GET',
+      path: '/login',
+      config: controllers.Root.login
+    },
     {
       method : 'GET',
       path : '/{path*}',

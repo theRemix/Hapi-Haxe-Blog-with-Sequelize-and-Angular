@@ -36,6 +36,17 @@ class Plugins
       dialectOptions: {}
     };
 
+
+    server.register( [ Node.require('hapi-auth-basic') ], function (err) {
+      
+      server.auth.strategy('simple', 'basic', { validateFunc: Auth.validate });
+      
+      if (err) {
+        Node.console.error('Failed to load a plugin:', err);
+        throw err;
+      }
+    });
+
     server.register([
       {
         register: Node.require('good'),

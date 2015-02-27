@@ -9,9 +9,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^0.8.1",
     "good": "^5.1.2",
     "good-console": "^4.1.0",
     "hapi": "^8.2.0",
+    "hapi-auth-basic": "^2.0.0",
     "hapi-sequelize": "^0.1.2",
     "pg": "^4.3.0",
     "pg-hstore": "^2.3.1",

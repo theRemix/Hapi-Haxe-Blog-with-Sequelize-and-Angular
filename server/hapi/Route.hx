@@ -1,7 +1,8 @@
 package hapi;
 
 typedef RouteHandler = {
-  handler : Request -> Reply -> Void
+  handler : Request -> Reply -> Void,
+  ?auth: String
 }
 
 typedef Route = {

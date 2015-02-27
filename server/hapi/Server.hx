@@ -14,6 +14,9 @@ extern class Server
     uri : String
   };
   public var plugins : Array<Dynamic>;
+  public var auth : {  
+    strategy : String -> String -> { validateFunc : Dynamic } -> Void
+  };
   
   public function start ( ready : Void -> Void ) : Void;
   public function log( tag : String, message : String) : Void;
